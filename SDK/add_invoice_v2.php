@@ -2,10 +2,9 @@
 
 require_once(__DIR__ . '/utils.php');
 
-class AddInvoice {
+class AddInvoiceV2 {
 
     private $epsUtli;
-    private bool $use_signature;
     private string $secret_word;
 
     /**
@@ -16,31 +15,28 @@ class AddInvoice {
      * @param string $_secret_word Секретное слово;
      * 
      */
-    public function __construct(bool $_isTest, string $_token, bool $_use_signature, string $_secret_word)
+    public function __construct(bool $_isTest, string $_token, string $_secret_word)
     {
-        $this->use_signature = $_use_signature;
         $this->secret_word = $_secret_word;
-        $this->epsUtli = new Utils($_isTest, 'invoices', $_token);
+        $this->epsUtli = new Utils($_isTest, 'invoices', $_token, 'v2');
     }
 
     /**
      * 
      * Выставление нового счета.
+     * В данном методе цифровая подпись является обязательным параметром.
      * Описание параметров приведено по ссылке.
-     * https://express-pay.by/docs/api/v1#invoices
+     * https://express-pay.by/docs/api/v1#web_invoices_add
      * 
      * @param array $params Список параметров
      * 
      * @return json Выходные параметры
      * 
      */
-    public function addInvoice(array $params)
+    public function addInvoiceV2(array $params)
     {
         $params = array_change_key_case($params, CASE_LOWER);
-
-        if ($this->use_signature) {
-            $params['signature'] = $this->epsUtli->computeSignature($params, $this->secret_word, 'add-invoice');
-        }
+        $params['signature'] = $this->epsUtli->computeSignature($params, $this->secret_word, 'add-invoice-v2');
 
         return $this->epsUtli->sendRequestPost($params);
 

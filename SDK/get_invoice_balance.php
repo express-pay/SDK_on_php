@@ -21,7 +21,7 @@ class GetInvoiceBalance
     {
         $this->use_signature = $_use_signature;
         $this->secret_word = $_secret_word;
-        $this->epsUtli = new Utuls($_isTest, 'balance', $_token);
+        $this->epsUtli = new Utils($_isTest, 'balance', $_token);
     }
 
 

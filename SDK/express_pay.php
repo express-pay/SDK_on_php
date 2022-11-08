@@ -14,6 +14,7 @@ require_once(__DIR__ . '/add_web_card_invoice.php');
 require_once(__DIR__ . '/get_payment_list.php');
 require_once(__DIR__ . '/get_payment_detail.php');
 require_once(__DIR__ . '/get_invoice_balance.php');
+require_once(__DIR__ . '/add_invoice_v2.php');
 
 class ExpressPay
 {
@@ -371,6 +372,28 @@ class ExpressPay
             $this->secret_word
         );
         return $get_invoice_balance->getInvoiceBalance($params);
+    }
+
+
+    /**
+     * 
+     * Выставление нового счета.
+     * Описание параметров приведено по ссылке.
+     * https://express-pay.by/docs/api/v1#invoices
+     * 
+     * @param array $params Список параметров
+     * 
+     * @return json Выходные параметры
+     * 
+     */
+    public function addInvoiceV2(array $params)
+    {
+        $add_invoice = new AddInvoiceV2(
+            $this->is_test, 
+            $this->token, 
+            $this->secret_word
+        );
+        return $add_invoice->addInvoiceV2($params);
     }
 
 

@@ -23,7 +23,7 @@ class GetQrCode
         $this->token = $_token;
         $this->use_signature = $_use_signature;
         $this->secret_word = $_secret_word;
-        $this->epsUtli = new Utuls($_isTest, 'qrcode/getqrcode', $_token);
+        $this->epsUtli = new Utils($_isTest, 'qrcode/getqrcode', $_token);
     }
 
 

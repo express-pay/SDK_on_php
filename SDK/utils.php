@@ -1,6 +1,6 @@
 <?php
 
-class Utuls
+class Utils
 {
     private string $baseUrl;
     private string $token;
@@ -10,15 +10,16 @@ class Utuls
      * @param Bool $_isTest Использовать ли тестовый режим
      * @param $_method Метод API
      * @param $_token API ключ 
+     * @param $_version Версия API
      * 
      */
-    public function __construct(bool $_isTest, string $_method, string $_token)
+    public function __construct(bool $_isTest, string $_method, string $_token, string $_version = 'v1')
     {
         $this->token = $_token;
         if (!$_isTest) {
-            $this->baseUrl = "https://api.express-pay.by/v1/$_method?token=$_token&";
+            $this->baseUrl = "https://api.express-pay.by/$_version/$_method?token=$_token&";
         } else {
-            $this->baseUrl = "https://sandbox-api.express-pay.by/v1/$_method?token=$_token&";
+            $this->baseUrl = "https://sandbox-api.express-pay.by/$_version/$_method?token=$_token&";
         }
     }
 
@@ -166,6 +167,49 @@ class Utuls
             "get-balance" => array(
                 "token",
                 "accountno"
+            ),
+            "add-invoice-v2" => array(
+                "token",
+                "serviceid",
+                "accountno",
+                "amount",
+                "currency",
+                "expiration",
+                "info",
+                "surname",
+                "firstname",
+                "patronymic",
+                "city",
+                "street",
+                "house",
+                "building",
+                "apartment",
+                "isnameeditable",
+                "isaddresseditable",
+                "isamounteditable",
+                "emailnotification",
+                "smsphone",
+                "returntype",
+                "returnurl",
+                "failurl",
+                "customerid"
+            ),
+            "recurring-payment-bind" => array(
+                "token",
+                "serviceid",
+                "writeoffperiod",
+                "amount",
+                "currency",
+                "info",
+                "returnurl",
+                "failurl",
+                "language",
+                "returntype"
+            ),
+            "recurring-payment-unbind" => array(
+                "token",
+                "serviceid",
+                "customerid"
             )
         );
         $apiMethod = $mapping[$method];
@@ -181,7 +225,7 @@ class Utuls
      * 
      * Отправка GET-запроса
      * 
-     * @param String $params параметры запроса
+     * @param Array $params параметры запроса
      * 
      * @return Json $response ответ от сервера
      * 
@@ -238,6 +282,15 @@ class Utuls
     public function sendRequestDelete($params)
     {
         $ch = curl_init();
+
+        if (isset($params['serviceid'])) {
+            $pos = strpos($this->baseUrl, "?");
+            $url = substr($this->baseUrl, 0, $pos);   
+            curl_setopt($ch, CURLOPT_URL, $url);
+        } else {
+            curl_setopt($ch, CURLOPT_URL, $this->baseUrl);
+        }
+        
         curl_setopt($ch, CURLOPT_URL, $this->baseUrl . http_build_query($params));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

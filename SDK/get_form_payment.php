@@ -42,7 +42,7 @@ class GetFormPayment
         $params = array_change_key_case($params, CASE_LOWER);
         $card_invoice_no = $params['cardinvoiceno'];
 
-        $this->epsUtli = new Utuls($this->is_test, "cardinvoices/{$card_invoice_no}/payment", $this->token);
+        $this->epsUtli = new Utils($this->is_test, "cardinvoices/{$card_invoice_no}/payment", $this->token);
 
         if ($this->use_signature) {
             $params['signature'] = $this->epsUtli->computeSignature($params, $this->secret_word, 'card-invoice-form');

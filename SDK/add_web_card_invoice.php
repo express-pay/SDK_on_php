@@ -18,7 +18,7 @@ class AddWebCardInvoice {
     public function __construct(bool $_isTest, string $_token, string $_secret_word)
     {
         $this->secret_word = $_secret_word;
-        $this->epsUtli = new Utuls($_isTest, 'web_cardinvoices', $_token);
+        $this->epsUtli = new Utils($_isTest, 'web_cardinvoices', $_token);
     }
 
     /**

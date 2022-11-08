@@ -42,7 +42,7 @@ class GetInvoiceStatus
         $params = array_change_key_case($params, CASE_LOWER);
         $invoiceNo = $params['invoiceno'];
 
-        $this->epsUtli = new Utuls($this->is_test, "invoices/{$invoiceNo}/status", $this->token);
+        $this->epsUtli = new Utils($this->is_test, "invoices/{$invoiceNo}/status", $this->token);
 
         if ($this->use_signature) {
             $params['signature'] = $this->epsUtli->computeSignature($params, $this->secret_word, 'status-invoice');

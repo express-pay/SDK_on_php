@@ -43,7 +43,7 @@ class CancelInvoice
         $params = array_change_key_case($params, CASE_LOWER);
         $invoice_no = $params['invoiceno'];
 
-        $this->epsUtli = new Utuls($this->is_test, "invoices/{$invoice_no}", $this->token);
+        $this->epsUtli = new Utils($this->is_test, "invoices/{$invoice_no}", $this->token);
 
         if ($this->use_signature) {
             $params['signature'] = $this->epsUtli->computeSignature($params, $this->secret_word, 'cancel-invoice');

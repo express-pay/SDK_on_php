@@ -42,7 +42,7 @@ class GetPaymentDetail
         $params = array_change_key_case($params, CASE_LOWER);
         $payment_no = $params['paymentno'];
 
-        $this->epsUtli = new Utuls($this->is_test, "payments/{$payment_no}", $this->token);
+        $this->epsUtli = new Utils($this->is_test, "payments/{$payment_no}", $this->token);
 
         if ($this->use_signature) {
             $params['signature'] = $this->epsUtli->computeSignature($params, $this->secret_word, 'get-details-payment');
